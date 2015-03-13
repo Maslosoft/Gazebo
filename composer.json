@@ -1,19 +1,19 @@
 {
-    "name": "maslosoft/gazebo",
-    "description": "Plugin container",
-    "require-dev": {
-        "maslosoft/hedron": "*",
-        "codeception/codeception": "*",
-        "codeception/specify": "*"
-    },
-    "license": "New BSD",
-    "authors": [
-        {
-            "name": "Peter Maselkowski",
-            "email": "pmaselkowski@gmail.com"
-        }
-    ],
-    "require": {},
+	"name": "maslosoft/gazebo",
+	"description": "Plugin container",
+	"require-dev": {
+		"maslosoft/hedron": "*",
+		"codeception/codeception": "*",
+		"codeception/specify": "*"
+	},
+	"license": "New BSD",
+	"authors": [
+		{
+			"name": "Peter Maselkowski",
+			"email": "pmaselkowski@gmail.com"
+		}
+	],
+	"require": {},
 	"autoload": {
 		"psr-4": {
 			"Maslosoft\\Gazebo\\": "src"
