@@ -16,7 +16,7 @@
 
 ### Quick Install
 ```bash
-	composer require maslosoft/gazebo:"*"
+composer require maslosoft/gazebo:"*"
 ```
 
 <!--/header-->
