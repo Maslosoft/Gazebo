@@ -9,6 +9,8 @@
 namespace Maslosoft\Gazebo;
 
 use ArrayAccess;
+use Countable;
+use Iterator;
 use Maslosoft\Gazebo\Exceptions\GazeboException;
 use ReflectionObject;
 use ReflectionProperty;
@@ -19,7 +21,7 @@ use ReflectionProperty;
  *
  * @author Piotr Maselkowski <pmaselkowski at gmail.com>
  */
-abstract class PluginContainer implements ArrayAccess
+class PluginContainer implements ArrayAccess, Countable, Iterator
 {
 
 	/**
@@ -27,6 +29,12 @@ abstract class PluginContainer implements ArrayAccess
 	 * @var mixed[]
 	 */
 	private $_values = [];
+
+	/**
+	 * Property accessed fields
+	 * @var bool[]
+	 */
+	private $_properties = [];
 
 	/**
 	 * Create instance with optional configuration.
@@ -44,6 +52,7 @@ abstract class PluginContainer implements ArrayAccess
 			{
 				continue;
 			}
+			$this->_properties[$property->name] = true;
 			unset($this->{$property->name});
 		}
 		$this->apply($config);
@@ -61,8 +70,13 @@ abstract class PluginContainer implements ArrayAccess
 		}
 	}
 
-// <editor-fold defaultstate="collapsed" desc="__get/__set implementation">
-	
+	public function has($name)
+	{
+		return array_key_exists($name, $this->_properties);
+	}
+
+// <editor-fold defaultstate="collapsed" desc="__* magic implementation">
+
 	/**
 	 * This will be called instead of public getting properties.
 	 * @param string $name
@@ -84,8 +98,26 @@ abstract class PluginContainer implements ArrayAccess
 		$this->offsetSet($name, $value);
 	}
 
-// </editor-fold>
+	/**
+	 * Unset
+	 * @param string $name
+	 */
+	public function __unset($name)
+	{
+		$this->offsetUnset($name);
+	}
 
+	/**
+	 * Isset
+	 * @param string $name
+	 * @return bool
+	 */
+	public function __isset($name)
+	{
+		return $this->offsetExists($name);
+	}
+
+// </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="ArrayAccess implementation">
 
 	public function offsetExists($name)
@@ -95,7 +127,7 @@ abstract class PluginContainer implements ArrayAccess
 
 	public function offsetGet($name)
 	{
-		if (!$this->offsetExists($name))
+		if (!$this->has($name))
 		{
 			throw new GazeboException("Configuration property `$name` does not exists. Tried to get value.");
 		}
@@ -104,7 +136,7 @@ abstract class PluginContainer implements ArrayAccess
 
 	public function offsetSet($name, $value)
 	{
-		if (!$this->offsetExists($name))
+		if (!$this->has($name))
 		{
 			throw new GazeboException("Configuration property `$name` does not exists. Tried to set value.");
 		}
@@ -113,11 +145,47 @@ abstract class PluginContainer implements ArrayAccess
 
 	public function offsetUnset($name)
 	{
-		if (!$this->offsetExists($name))
+		if (!$this->has($name))
 		{
 			throw new GazeboException("Configuration property `$name` does not exists. Tried to unset value.");
 		}
-		return $this->_values[$name] = $value;
+		unset($this->_values[$name]);
+	}
+
+// </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="Countable implementation">
+
+	public function count($mode = COUNT_NORMAL)
+	{
+		return count($this->_values, $mode);
+	}
+
+// </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="Iterator implementation">
+
+	public function current()
+	{
+		return current($this->_values);
+	}
+
+	public function key()
+	{
+		return key($this->_values);
+	}
+
+	public function next()
+	{
+		return next($this->_values);
+	}
+
+	public function rewind()
+	{
+		return reset($this->_values);
+	}
+
+	public function valid()
+	{
+		return $this->has($this->key()) && $this->offsetExists($this->key());
 	}
 
 // </editor-fold>
