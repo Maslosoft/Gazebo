@@ -18,10 +18,10 @@ use ReflectionProperty;
 /**
  * Plugin container for easier managing complex array
  * and to allow some php docs on otherways hardly documented arrays.
- *
+ * This restricts array like access to only public defined properties.
  * @author Piotr Maselkowski <pmaselkowski at gmail.com>
  */
-class PluginContainer implements ArrayAccess, Countable, Iterator
+abstract class PluginContainer implements ArrayAccess, Countable, Iterator
 {
 
 	/**
