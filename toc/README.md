@@ -21,4 +21,51 @@ composer require maslosoft/gazebo:"*"
 
 <!--/header-->
 
-Other content
+### Usage
+
+```php
+//Plugins
+class WaterPlugin implements WetInterface
+{
+	public $name = 'foo';
+}
+class MetalPlugin implements HardInterface
+{
+	public $options = false;
+}
+class GenericPlugin
+{
+
+}
+// Config:
+$config = [
+			TestModel::class => [
+				WaterPlugin::class,
+				[
+					'class' => MetalPlugin::class,
+					'options' => true
+				],
+				GenericPlugin::class,
+			],
+		];
+
+// Create plugins but only for selected interfaces
+$plugins = (new PluginFactory())->instance($this->config, $model, [
+			HardInterface::class,
+			WetInterface::class
+		]);
+
+
+var_dump($plugins);
+
+// Created flyweight instances of two plugins
+//array(2) {
+//	[0] => class Maslosoft\GazeboTest\Model\WaterPlugin#181 (1) {
+//		public $name => string(3) "foo"
+//	}
+//	[1] => class Maslosoft\GazeboTest\Model\MetalPlugin#182 (2) {
+//		public $options => bool(true)
+//		public $class => string(38) "Maslosoft\GazeboTest\Model\MetalPlugin"
+//	}
+//}
+```

@@ -92,7 +92,7 @@ class InstancesTest extends Test
 		$this->assertInstanceOf($expectedCfg[0], $plugins2[0]);
 		$this->assertInstanceOf($expectedCfg[1]['class'], $plugins2[1]);
 		$this->assertSame($expectedCfg[1]['options'], $plugins2[1]->options);
-
+		
 		// Check if same instances
 		$this->assertSame($plugins[0], $plugins2[0]);
 		$this->assertSame($plugins[1], $plugins2[1]);
