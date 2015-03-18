@@ -9,11 +9,11 @@
 namespace Maslosoft\GazeboTest\Model;
 
 /**
- * TestModelTwo
+ * TestPluginThree
  *
  * @author Piotr Maselkowski <pmaselkowski at gmail.com>
  */
-class TestModelTwo
+class GenericPlugin
 {
 
 }

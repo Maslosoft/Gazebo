@@ -22,10 +22,4 @@ use Maslosoft\EmbeDi\StaticStorage;
 class PluginsStorage extends StaticStorage
 {
 
-	/**
-	 * Plugins instances
-	 * @var object[][]
-	 */
-	public $plugins = [];
-
 }

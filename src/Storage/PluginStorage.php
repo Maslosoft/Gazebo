@@ -6,14 +6,16 @@
  * and open the template in the editor.
  */
 
-namespace Maslosoft\GazeboTest\Model;
+namespace Maslosoft\Gazebo\Storage;
+
+use Maslosoft\EmbeDi\StaticStorage;
 
 /**
- * TestModelTwo
+ * Storega for single instances of plugins
  *
  * @author Piotr Maselkowski <pmaselkowski at gmail.com>
  */
-class TestModelTwo
+class PluginStorage extends StaticStorage
 {
 
 }

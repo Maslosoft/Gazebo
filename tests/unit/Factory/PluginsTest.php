@@ -7,8 +7,9 @@ use Maslosoft\Gazebo\PluginFactory;
 use Maslosoft\GazeboTest\Model\HardInterface;
 use Maslosoft\GazeboTest\Model\SoftInterface;
 use Maslosoft\GazeboTest\Model\TestModel;
-use Maslosoft\GazeboTest\Model\TestPluginOne;
-use Maslosoft\GazeboTest\Model\TestPluginTwo;
+use Maslosoft\GazeboTest\Model\WaterPlugin;
+use Maslosoft\GazeboTest\Model\GenericPlugin;
+use Maslosoft\GazeboTest\Model\MetalPlugin;
 use Maslosoft\GazeboTest\Model\WetInterface;
 use UnitTester;
 
@@ -30,11 +31,12 @@ class PluginsTest extends Test
 	{
 		$this->config = [
 			TestModel::class => [
-				TestPluginOne::class,
+				WaterPlugin::class,
 				[
-					'class' => TestPluginTwo::class,
+					'class' => MetalPlugin::class,
 					'options' => true
-				]
+				],
+				GenericPlugin::class
 			]
 		];
 	}
@@ -44,11 +46,12 @@ class PluginsTest extends Test
 	{
 		$model = new TestModel;
 		$plugins = (new PluginFactory())->create($this->config, $model);
-		$this->assertSame(2, count($plugins), 'Should create 2 plugin instances');
+		$this->assertSame(3, count($plugins), 'Should create 3 plugin instances');
 		$expectedCfg = $this->config[TestModel::class];
 
 		$this->assertInstanceOf($expectedCfg[0], $plugins[0]);
 		$this->assertInstanceOf($expectedCfg[1]['class'], $plugins[1]);
+		$this->assertInstanceOf($expectedCfg[2], $plugins[2]);
 		$this->assertSame($expectedCfg[1]['options'], $plugins[1]->options);
 	}
 

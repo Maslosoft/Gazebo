@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 
-namespace Maslosoft\GazeboTest\Model;
+namespace Maslosoft\Gazebo\Exceptions;
 
 /**
- * TestModelTwo
+ * ConfigurationException
  *
  * @author Piotr Maselkowski <pmaselkowski at gmail.com>
  */
-class TestModelTwo
+class ConfigurationException extends GazeboException
 {
 
 }

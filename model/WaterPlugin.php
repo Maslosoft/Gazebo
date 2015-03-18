@@ -17,7 +17,7 @@ namespace Maslosoft\GazeboTest\Model;
  *
  * @author Piotr Maselkowski <pmaselkowski at gmail.com>
  */
-class TestPluginOne implements WetInterface
+class WaterPlugin implements WetInterface
 {
 	public $name = 'foo';
 }

@@ -17,7 +17,7 @@ namespace Maslosoft\GazeboTest\Model;
  *
  * @author Piotr Maselkowski <pmaselkowski at gmail.com>
  */
-class TestPluginTwo implements HardInterface
+class MetalPlugin implements HardInterface
 {
 
 	public $options = false;

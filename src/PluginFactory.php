@@ -13,6 +13,7 @@
 namespace Maslosoft\Gazebo;
 
 use Maslosoft\EmbeDi\EmbeDi;
+use Maslosoft\Gazebo\Exceptions\ConfigurationException;
 use Maslosoft\Gazebo\Storage\PluginsStorage;
 use ReflectionClass;
 
@@ -25,10 +26,16 @@ class PluginFactory
 {
 
 	/**
-	 * Plugins instances
+	 * Configured plugins instances
 	 * @var PluginsStorage
 	 */
 	private $instances = null;
+
+	/**
+	 * Single plugins instances
+	 * @var Storage\PluginStorage
+	 */
+	private $plugins = null;
 
 	/**
 	 * EmbeDi instance
@@ -43,6 +50,7 @@ class PluginFactory
 	public function __construct($instanceId = Gazebo::DefaultInstanceId)
 	{
 		$this->instances = new PluginsStorage($this, $instanceId);
+		$this->plugins = new Storage\PluginStorage($this, $instanceId);
 		$this->di = new EmbeDi($instanceId);
 	}
 
@@ -58,21 +66,9 @@ class PluginFactory
 	public function create($configuration, $object, $interfaces = null)
 	{
 		$plugins = [];
-		foreach ($configuration as $interface => $configs)
+		foreach ($this->_getConfigs($configuration, $object, $interfaces) as $config)
 		{
-			if (!$this->_implements($object, $interface))
-			{
-				continue;
-			}
-			foreach ($configs as $config)
-			{
-				$pluginClass = $this->_getClassName($config);
-				if (!$this->_implements($pluginClass, $interfaces))
-				{
-					continue;
-				}
-				$plugins[] = $this->_instantiate($config);
-			}
+			$plugins[] = $this->_instantiate($config);
 		}
 		return $plugins;
 	}
@@ -80,6 +76,9 @@ class PluginFactory
 	/**
 	 * Get instance of plugin set from `$configuration` for `$object`
 	 * optionally implementing one or more `$interfaces`.
+	 *
+	 * This will create instances unique for each object and interfaces set.
+	 * This will create only **one instance** of each plugin.
 	 *
 	 * @param mixed[][] $configuration
 	 * @param object $object
@@ -91,15 +90,22 @@ class PluginFactory
 		$key = get_class($object);
 		if (null !== $interfaces)
 		{
-			if (is_array($interfaces))
+			if (!is_array($interfaces))
 			{
-				$interfaces = [$interfaces];
+				$interfaces = [
+					(string) $interfaces
+				];
 			}
 			$key .= '.' . implode('.', $interfaces);
 		}
 		if (!isset($this->instances[$key]))
 		{
-			$this->instances[$key] = $this->create($configuration, $object, $interfaces);
+			$plugins = [];
+			foreach ($this->_getConfigs($configuration, $object, $interfaces) as $config)
+			{
+				$plugins[] = $this->_instantiate($config, true);
+			}
+			$this->instances[$key] = $plugins;
 		}
 		return $this->instances[$key];
 	}
@@ -118,7 +124,9 @@ class PluginFactory
 		}
 		if (!is_array($interfaces))
 		{
-			$interfaces = [$interfaces];
+			$interfaces = [
+				(string) $interfaces
+			];
 		}
 		foreach ($interfaces as $interface)
 		{
@@ -149,23 +157,76 @@ class PluginFactory
 	{
 		if (is_string($config))
 		{
-			return new $config;
+			return $config;
 		}
 		return $config[$this->di->classField];
 	}
 
 	/**
-	 * Instantiate object basd on configuration
+	 * Config generator
+	 *
+	 * @param mixed[][] $configuration Configuration arrays
+	 * @param string|object $object Object or class name
+	 * @param null|string|string[] $interfaces Array or string of interface names or class names
+	 * @return object[] Array of plugin instances
+	 */
+	private function _getConfigs($configuration, $object, $interfaces = null)
+	{
+		foreach ($configuration as $interface => $configs)
+		{
+			if (!is_string($interface))
+			{
+				throw new ConfigurationException(sprintf('Wrong configuration for key `%s` - key must be class name', $interface));
+			}
+			if (!is_array($configs))
+			{
+				throw new ConfigurationException(sprintf('Wrong configuration for key `%s`, configuration should be array, `%s` given', $interface, gettype($configs)));
+			}
+			if (!$this->_implements($object, $interface))
+			{
+				continue;
+			}
+			foreach ($configs as $config)
+			{
+				$pluginClass = $this->_getClassName($config);
+				if (!$this->_implements($pluginClass, $interfaces))
+				{
+					continue;
+				}
+				yield $config;
+			}
+		}
+	}
+
+	/**
+	 * Instantiate object based on configuration
 	 * @param string|array $config
 	 * @return object
 	 */
-	private function _instantiate($config)
+	private function _instantiate($config, $fly = false)
 	{
-		if (is_string($config))
+
+		$className = $this->_getClassName($config);
+		if ($fly)
 		{
-			return new $config;
+			if(isset($this->plugins[$className]))
+			{
+				$plugin = $this->plugins[$className];
+			}
+			else
+			{
+				$plugin = $this->plugins[$className] = new $className;
+			}
 		}
-		return $this->di->apply($config);
+		else
+		{
+			$plugin = new $className;
+		}
+		if (is_array($config))
+		{
+			$plugin = $this->di->apply($config, $plugin);
+		}
+		return $plugin;
 	}
 
 }
