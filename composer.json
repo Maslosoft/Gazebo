@@ -13,7 +13,9 @@
 			"email": "pmaselkowski@gmail.com"
 		}
 	],
-	"require": {},
+	"require": {
+		"maslosoft/embedi": "*"
+	},
 	"autoload": {
 		"psr-4": {
 			"Maslosoft\\Gazebo\\": "src"
