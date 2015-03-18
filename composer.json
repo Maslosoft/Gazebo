@@ -6,7 +6,10 @@
 		"codeception/codeception": "*",
 		"codeception/specify": "*"
 	},
-	"license": "New BSD",
+	"license": [
+		"AGPL",
+		"Commercial"
+	],
 	"authors": [
 		{
 			"name": "Peter Maselkowski",
