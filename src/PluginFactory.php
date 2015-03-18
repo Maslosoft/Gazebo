@@ -52,7 +52,7 @@ class PluginFactory
 	 * 
 	 * @param mixed[][] $configuration Configuration arrays
 	 * @param string|object $object Object or class name
-	 * @param string|string[] $interfaces Array or string of interface names or class names
+	 * @param null|string|string[] $interfaces Array or string of interface names or class names
 	 * @return object[] Array of plugin instances
 	 */
 	public function create($configuration, $object, $interfaces = null)
@@ -83,7 +83,7 @@ class PluginFactory
 	 *
 	 * @param mixed[][] $configuration
 	 * @param object $object
-	 * @param string|string[] $interfaces
+	 * @param null|string|string[] $interfaces
 	 * @return object[] Array of plugin instances
 	 */
 	public function instance($configuration, $object, $interfaces = null)
