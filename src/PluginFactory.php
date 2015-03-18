@@ -150,7 +150,7 @@ class PluginFactory
 
 	/**
 	 * Get class name from configuration
-	 * @param type $config
+	 * @param string|mixed[] $config
 	 * @return string
 	 */
 	private function _getClassName($config)
@@ -200,7 +200,7 @@ class PluginFactory
 
 	/**
 	 * Instantiate object based on configuration
-	 * @param string|array $config
+	 * @param string|mixed[] $config
 	 * @return object
 	 */
 	private function _instantiate($config, $fly = false)
