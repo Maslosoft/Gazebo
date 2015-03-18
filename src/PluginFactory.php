@@ -168,7 +168,8 @@ class PluginFactory
 	 * @param mixed[][] $configuration Configuration arrays
 	 * @param string|object $object Object or class name
 	 * @param null|string|string[] $interfaces Array or string of interface names or class names
-	 * @return object[] Array of plugin instances
+	 * @return mixed[] Array of plugin configs
+	 * @yield mixed[] Array of plugin configs
 	 */
 	private function _getConfigs($configuration, $object, $interfaces = null)
 	{

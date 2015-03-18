@@ -6,8 +6,7 @@ php:
   - hhvm
 matrix:
   allow_failures:
-    - php:
-      - nightly
+    - php: nightly
 install:
   - composer install --prefer-dist
 after_script:
