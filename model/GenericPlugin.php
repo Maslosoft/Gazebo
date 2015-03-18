@@ -1,9 +1,13 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * This software package is licensed under `AGPL, Commercial` license[s].
+ *
+ * @package maslosoft/gazebo
+ * @license AGPL, Commercial
+ *
+ * @copyright Copyright (c) Peter Maselkowski <pmaselkowski@gmail.com>
+ *
  */
 
 namespace Maslosoft\GazeboTest\Model;
