@@ -18,7 +18,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Maslosoft\\Gazebo\\": "src"
+			"Maslosoft\\Gazebo\\": "src",
+			"Maslosoft\\GazeboTest\\Model\\": "model"
 		}
 	}
 }
