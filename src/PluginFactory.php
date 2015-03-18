@@ -54,10 +54,19 @@ class PluginFactory
 	public function create($configuration, $object, $interfaces = null)
 	{
 		$plugins = [];
-		foreach ($configuration as $interface => $config)
+		foreach ($configuration as $interface => $configs)
 		{
-			if ($this->_implements($object, $interface) && $this->_implements($interface, $interfaces))
+			if (!$this->_implements($object, $interface))
 			{
+				continue;
+			}
+			foreach ($configs as $config)
+			{
+				$pluginClass = $this->_getClassName($config);
+				if (!$this->_implements($pluginClass, $interfaces))
+				{
+					continue;
+				}
 				$plugins[] = $this->_instantiate($config);
 			}
 		}
@@ -84,11 +93,11 @@ class PluginFactory
 			}
 			$key .= '.' . implode('.', $interfaces);
 		}
-		if (!isset(self::$i[$key]))
+		if (!isset($this->instances[$key]))
 		{
-
+			$this->instances[$key] = $this->create($configuration, $object, $interfaces);
 		}
-		return self::$i[$key];
+		return $this->instances[$key];
 	}
 
 	/**
@@ -109,8 +118,17 @@ class PluginFactory
 		}
 		foreach ($interfaces as $interface)
 		{
-			$info = new ReflectionClass($object);
-			if ($info->implementsInterface($interface))
+			$objectInfo = new ReflectionClass($object);
+			$interfaceInfo = new ReflectionClass($interface);
+			if ($objectInfo->name === $interfaceInfo->name)
+			{
+				return true;
+			}
+			if ($objectInfo->isSubclassOf($interface))
+			{
+				return true;
+			}
+			if ($interfaceInfo->isInterface() && $objectInfo->implementsInterface($interface))
 			{
 				return true;
 			}
