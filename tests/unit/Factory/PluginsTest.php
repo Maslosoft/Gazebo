@@ -3,13 +3,15 @@
 namespace Factory;
 
 use Codeception\TestCase\Test;
+use Maslosoft\Gazebo\Exceptions\GazeboException;
 use Maslosoft\Gazebo\PluginFactory;
+use Maslosoft\Gazebo\PluginsContainer;
+use Maslosoft\GazeboTest\Model\GenericPlugin;
 use Maslosoft\GazeboTest\Model\HardInterface;
+use Maslosoft\GazeboTest\Model\MetalPlugin;
 use Maslosoft\GazeboTest\Model\SoftInterface;
 use Maslosoft\GazeboTest\Model\TestModel;
 use Maslosoft\GazeboTest\Model\WaterPlugin;
-use Maslosoft\GazeboTest\Model\GenericPlugin;
-use Maslosoft\GazeboTest\Model\MetalPlugin;
 use Maslosoft\GazeboTest\Model\WetInterface;
 use UnitTester;
 
@@ -29,7 +31,7 @@ class PluginsTest extends Test
 
 	protected function _before()
 	{
-		$this->config = [
+		$this->config = new PluginsContainer([
 			TestModel::class => [
 				WaterPlugin::class,
 				[
@@ -38,7 +40,7 @@ class PluginsTest extends Test
 				],
 				GenericPlugin::class
 			]
-		];
+		]);
 	}
 
 	// tests
@@ -90,6 +92,64 @@ class PluginsTest extends Test
 		$this->assertInstanceOf(SoftInterface::class, $plugins[0]);
 		$this->assertInstanceOf(HardInterface::class, $plugins[1]);
 		$this->assertSame($expectedCfg[1]['options'], $plugins[1]->options);
+	}
+
+	public function testIfWillThrowExceptionOnBogusClass()
+	{
+		try
+		{
+			new PluginsContainer([
+				TestModel_Bogus::class => [
+					WaterPlugin::class,
+					[
+						'class' => MetalPlugin::class,
+						'options' => true
+					],
+					GenericPlugin::class
+				]
+			]);
+			$this->fail("Should throw exception");
+		}
+		catch (GazeboException $ex)
+		{
+			$this->assertTrue(true);
+		}
+		try
+		{
+			new PluginsContainer([
+				TestModel::class => [
+					WaterPlugin_Bogus::class,
+					[
+						'class' => MetalPlugin::class,
+						'options' => true
+					],
+					GenericPlugin::class
+				]
+			]);
+			$this->fail("Should throw exception");
+		}
+		catch (GazeboException $ex)
+		{
+			$this->assertTrue(true);
+		}
+		try
+		{
+			new PluginsContainer([
+				TestModel::class => [
+					WaterPlugin::class,
+					[
+						'class' => MetalPlugin_Bogus::class,
+						'options' => true
+					],
+					GenericPlugin::class
+				]
+			]);
+			$this->fail("Should throw exception");
+		}
+		catch (GazeboException $ex)
+		{
+			$this->assertTrue(true);
+		}
 	}
 
 }

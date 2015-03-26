@@ -1,22 +1,33 @@
 <?php
+
 namespace Container;
 
-class TestContainer extends \Maslosoft\Gazebo\PluginContainer
+use Codeception\TestCase\Test;
+use Maslosoft\Gazebo\ConfigContainer;
+use Maslosoft\GazeboTest\Model\HardInterface;
+use Maslosoft\GazeboTest\Model\SoftInterface;
+use Maslosoft\GazeboTest\Model\TestModel;
+use UnitTester;
+
+class TestContainer extends ConfigContainer
 {
+
 	public $test;
 	public $test2;
 	public $test3;
 	public $test4;
 	public $foo;
 	public $bar;
+
 }
 
-class ArrayAccessTest extends \Codeception\TestCase\Test
+class ArrayAccessTest extends Test
 {
-    /**
-     * @var \UnitTester
-     */
-    protected $tester;
+
+	/**
+	 * @var UnitTester
+	 */
+	protected $tester;
 
 	/**
 	 *
@@ -38,17 +49,35 @@ class ArrayAccessTest extends \Codeception\TestCase\Test
 
 	public function testCanStoreArrayValues()
 	{
-		$this->container['test'] = 'foo';
-		$this->container['test2'] = 'bar';
-		$this->assertSame($this->container['test'], 'foo');
-		$this->assertSame($this->container['test2'], 'bar');
+		$cfg1 = [
+			TestModel::class => [
+				SoftInterface::class
+			]
+		];
+		$cfg2 = [
+			TestModel::class => [
+				HardInterface::class
+			]
+		];
+		$this->container['test'] = $cfg1;
+		$this->container['test2'] = $cfg2;
+		$this->assertSame($this->container['test'], $cfg1);
+		$this->assertSame($this->container['test2'], $cfg2);
 	}
 
 	public function testIfCanUnset()
 	{
-		$this->container['test'] = 'foo';
-		$this->container->test2 = 'bar';
-		
+		$this->container['test'] = [
+			TestModel::class => [
+				SoftInterface::class
+			]
+		];
+		$this->container->test2 = [
+			TestModel::class => [
+				HardInterface::class
+			]
+		];
+
 		$this->assertTrue(isset($this->container['test']));
 		unset($this->container['test']);
 		$this->assertFalse(isset($this->container['test']));
@@ -60,37 +89,63 @@ class ArrayAccessTest extends \Codeception\TestCase\Test
 
 	public function testCanAccessAsFieldValues()
 	{
-		$this->container->test3 = 'foo';
-		$this->container->test4 = 'bar';
-		$this->assertSame($this->container->test3, 'foo');
-		$this->assertSame($this->container->test4, 'bar');
-		$this->assertSame($this->container['test3'], 'foo');
-		$this->assertSame($this->container['test4'], 'bar');
+		$cfg1 = [
+			TestModel::class => [
+				SoftInterface::class
+			]
+		];
+		$cfg2 = [
+			TestModel::class => [
+				HardInterface::class
+			]
+		];
+		$this->container->test3 = $cfg1;
+		$this->container->test4 = $cfg2;
+		$this->assertSame($this->container->test3, $cfg1);
+		$this->assertSame($this->container->test4, $cfg2);
+		$this->assertSame($this->container['test3'], $cfg1);
+		$this->assertSame($this->container['test4'], $cfg2);
 	}
 
 	public function testCanSerialize()
 	{
-		$data = [
-			'foo' => 1,
-			'bar' => 'baz'
+		$cfg1 = [
+			TestModel::class => [
+				SoftInterface::class
+			]
 		];
-		$this->container->foo = $data['foo'];
-		$this->container->bar = $data['bar'];
+		$cfg2 = [
+			TestModel::class => [
+				HardInterface::class
+			]
+		];
+		$this->container->foo = $cfg1;
+		$this->container->bar = $cfg2;
 		$serialized = serialize($this->container);
 		$unserialized = unserialize($serialized);
-		$this->assertSame($unserialized['foo'], $data['foo']);
-		$this->assertSame($unserialized['bar'], $data['bar']);
+		$this->assertSame($unserialized['foo'], $cfg1);
+		$this->assertSame($unserialized['bar'], $cfg2);
 		$this->assertTrue($unserialized instanceof TestContainer);
 	}
 
 	public function testCanDoForeach()
 	{
-		$data = [
-			'foo' => 1,
-			'bar' => 'baz'
+		$cfg1 = [
+			TestModel::class => [
+				SoftInterface::class
+			]
 		];
-		$this->container->foo = $data['foo'];
-		$this->container->bar = $data['bar'];
+		$cfg2 = [
+			TestModel::class => [
+				HardInterface::class
+			]
+		];
+		$data = [
+			'foo' => $cfg1,
+			'bar' => $cfg2
+		];
+		$this->container->foo = $cfg1;
+		$this->container->bar = $cfg2;
 		foreach ($this->container as $key => $value)
 		{
 			$this->assertSame($value, $data[$key]);
@@ -99,12 +154,18 @@ class ArrayAccessTest extends \Codeception\TestCase\Test
 
 	public function testCanUnset()
 	{
-		$data = [
-			'foo' => 1,
-			'bar' => 'baz'
+		$cfg1 = [
+			TestModel::class => [
+				SoftInterface::class
+			]
 		];
-		$this->container->foo = $data['foo'];
-		$this->container->bar = $data['bar'];
+		$cfg2 = [
+			TestModel::class => [
+				HardInterface::class
+			]
+		];
+		$this->container->foo = $cfg1;
+		$this->container->bar = $cfg2;
 		unset($this->container['foo']);
 		$this->assertFalse(isset($this->container['foo']));
 		$this->assertFalse(isset($this->container->foo));
@@ -115,12 +176,19 @@ class ArrayAccessTest extends \Codeception\TestCase\Test
 
 	public function testCount()
 	{
-		$data = [
-			'foo' => 1,
-			'bar' => 'baz'
+		$cfg1 = [
+			TestModel::class => [
+				SoftInterface::class
+			]
 		];
-		$this->container->foo = $data['foo'];
-		$this->container->bar = $data['bar'];
+		$cfg2 = [
+			TestModel::class => [
+				HardInterface::class
+			]
+		];
+		$this->container->foo = $cfg1;
+		$this->container->bar = $cfg2;
 		$this->assertSame(count($this->container), 2);
-	} 
+	}
+
 }

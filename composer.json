@@ -18,7 +18,7 @@
 	],
 	"require": {
 		"maslosoft/embedi": "*",
-		"maslosoft/zamm": "*"
+		"maslosoft/addendum": "*"
 	},
 	"autoload": {
 		"psr-4": {

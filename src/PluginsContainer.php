@@ -1,13 +1,9 @@
 <?php
 
-/**
- * This software package is licensed under `AGPL, Commercial` license[s].
- *
- * @package maslosoft/gazebo
- * @license AGPL, Commercial
- *
- * @copyright Copyright (c) Peter Maselkowski <pmaselkowski@gmail.com>
- *
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 namespace Maslosoft\Gazebo;
@@ -15,17 +11,16 @@ namespace Maslosoft\Gazebo;
 use ArrayAccess;
 use Countable;
 use Iterator;
+use Maslosoft\Addendum\Utilities\ClassChecker;
+use Maslosoft\EmbeDi\EmbeDi;
 use Maslosoft\Gazebo\Exceptions\GazeboException;
-use ReflectionObject;
-use ReflectionProperty;
 
 /**
- * Plugin container for easier managing complex array
- * and to allow some php docs on otherways hardly documented arrays.
- * This restricts array like access to only public defined properties.
+ * PluginsContainer
+ *
  * @author Piotr Maselkowski <pmaselkowski at gmail.com>
  */
-abstract class PluginContainer implements ArrayAccess, Countable, Iterator
+class PluginsContainer implements ArrayAccess, Countable, Iterator
 {
 
 	/**
@@ -35,10 +30,10 @@ abstract class PluginContainer implements ArrayAccess, Countable, Iterator
 	private $_values = [];
 
 	/**
-	 * Property accessed fields
-	 * @var bool[]
+	 * DI container
+	 * @var EmbeDi
 	 */
-	private $_properties = [];
+	private $_di = null;
 
 	/**
 	 * Create instance with optional configuration.
@@ -48,17 +43,7 @@ abstract class PluginContainer implements ArrayAccess, Countable, Iterator
 	 */
 	public function __construct($config = [])
 	{
-		$info = new ReflectionObject($this);
-		foreach ($info->getProperties(ReflectionProperty::IS_PUBLIC) as $property)
-		{
-			/* @var $property ReflectionProperty */
-			if ($property->isStatic())
-			{
-				continue;
-			}
-			$this->_properties[$property->name] = true;
-			unset($this->{$property->name});
-		}
+		$this->_di = new EmbeDi();
 		$this->apply($config);
 	}
 
@@ -68,15 +53,20 @@ abstract class PluginContainer implements ArrayAccess, Countable, Iterator
 	 */
 	public function apply($config)
 	{
-		foreach ($config as $name => $value)
+		foreach ((array)$config as $name => $value)
 		{
 			$this->offsetSet($name, $value);
 		}
 	}
 
+	public function toArray()
+	{
+		return $this->_values;
+	}
+
 	public function has($name)
 	{
-		return array_key_exists($name, $this->_properties);
+		return ClassChecker::exists($name);
 	}
 
 // <editor-fold defaultstate="collapsed" desc="__* magic implementation">
@@ -133,7 +123,7 @@ abstract class PluginContainer implements ArrayAccess, Countable, Iterator
 	{
 		if (!$this->has($name))
 		{
-			throw new GazeboException("Configuration property `$name` does not exists. Tried to get value.");
+			throw new GazeboException("Class `$name` used as key does not exists. Tried to get value.");
 		}
 		return $this->_values[$name];
 	}
@@ -142,7 +132,22 @@ abstract class PluginContainer implements ArrayAccess, Countable, Iterator
 	{
 		if (!$this->has($name))
 		{
-			throw new GazeboException("Configuration property `$name` does not exists. Tried to set value.");
+			throw new GazeboException("Class `$name` used as key does not exists. Tried to set value.");
+		}
+		foreach($value as $cfg)
+		{
+			if(is_array($cfg))
+			{
+				$className = $cfg[$this->_di->classField];
+			}
+			else
+			{
+				$className = $cfg;
+			}
+			if (!$this->has($className))
+			{
+				throw new GazeboException("Class `$className` used as value does not exists. Tried to set value.");
+			}
 		}
 		return $this->_values[$name] = $value;
 	}
