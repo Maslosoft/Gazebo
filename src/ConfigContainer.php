@@ -57,6 +57,7 @@ abstract class ConfigContainer implements ArrayAccess, Countable, Iterator
 				continue;
 			}
 			$this->_properties[$property->name] = true;
+			$this->_values[$property->name] = new PluginsContainer();
 			unset($this->{$property->name});
 		}
 		$this->apply($config);
