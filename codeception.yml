@@ -1,9 +1,9 @@
 actor: Tester
 paths:
-    tests: tests
+    tests: vendor/maslosoft/gazebotest/tests
     log: tests/_output
-    data: tests/_data
-    helpers: tests/_support
+    data: vendor/maslosoft/gazebotest/tests/_data
+    helpers: vendor/maslosoft/gazebotest/tests/_support
 settings:
     bootstrap: _bootstrap.php
     colors: true

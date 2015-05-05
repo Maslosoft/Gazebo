@@ -3,8 +3,7 @@
 	"description": "Plugin container",
 	"require-dev": {
 		"maslosoft/hedron": "*",
-		"codeception/codeception": "*",
-		"codeception/specify": "*"
+		"codeception/gazebotest": "*"
 	},
 	"license": [
 		"AGPL",
@@ -22,8 +21,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Maslosoft\\Gazebo\\": "src",
-			"Maslosoft\\GazeboTest\\Model\\": "model"
+			"Maslosoft\\Gazebo\\": "src"
 		}
 	}
 }
