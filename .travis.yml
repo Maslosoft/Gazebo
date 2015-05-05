@@ -8,7 +8,7 @@ matrix:
   allow_failures:
     - php: nightly
 install:
-  - composer install --prefer-dist
+  - composer install --dev --prefer-dist
   - cd vendor/maslosoft/gazebotest && git reset --hard && git pull
 after_script:
   - travis-ocular.sh Maslosoft\Gazebo
