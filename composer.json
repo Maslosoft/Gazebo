@@ -3,7 +3,7 @@
 	"description": "Plugin container",
 	"require-dev": {
 		"maslosoft/hedron": "*",
-		"codeception/gazebotest": "*"
+		"maslosoft/gazebotest": "dev-master"
 	},
 	"license": [
 		"AGPL",
