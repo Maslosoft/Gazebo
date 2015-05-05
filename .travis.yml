@@ -9,6 +9,7 @@ matrix:
     - php: nightly
 install:
   - composer install --prefer-dist
+  - cd vendor/maslosoft/gazebotest && git reset --hard && git pull
 after_script:
   - travis-ocular.sh Maslosoft\Gazebo
 script:
