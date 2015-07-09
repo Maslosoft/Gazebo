@@ -64,13 +64,15 @@ class PluginFactory
 	 * Flyweight accessor for `PluginFactory` with optional instanceid.
 	 * This will create only one runtime wide instance of `PluginFactory` for each `$instanceId`.
 	 * @param string $instanceId
+	 * @return PluginFactory Flyweight instance of PluginFactory
 	 */
-	public function fly($instanceId = Gazebo::DefaultInstanceId)
+	public static function fly($instanceId = Gazebo::DefaultInstanceId)
 	{
-		if (!isset(self::$_pf[$instanceId]))
+		if (empty(self::$_pf[$instanceId]))
 		{
-			$_pf[$instanceId] = new static($instanceId);
+			self::$_pf[$instanceId] = new static($instanceId);
 		}
+		return self::$_pf[$instanceId];
 	}
 
 	/**
