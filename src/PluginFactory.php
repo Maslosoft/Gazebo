@@ -44,6 +44,12 @@ class PluginFactory
 	private $di = null;
 
 	/**
+	 * Static instances of plugin factories
+	 * @var PluginFactory[]
+	 */
+	private static $_pf = [];
+
+	/**
 	 * Class constructor with optional instanceid which is passed to EmbeDi
 	 * @param string $instanceId
 	 */
@@ -55,9 +61,22 @@ class PluginFactory
 	}
 
 	/**
+	 * Flyweight accessor for `PluginFactory` with optional instanceid.
+	 * This will create only one runtime wide instance of `PluginFactory` for each `$instanceId`.
+	 * @param string $instanceId
+	 */
+	public function fly($instanceId = Gazebo::DefaultInstanceId)
+	{
+		if (!isset(self::$_pf[$instanceId]))
+		{
+			$_pf[$instanceId] = new static($instanceId);
+		}
+	}
+
+	/**
 	 * Create plugin set from `$configuration` for `$object`
 	 * optionally implementing one or more `$interfaces`.
-	 * 
+	 *
 	 * @param mixed[][] $configuration Configuration arrays
 	 * @param string|object $object Object or class name
 	 * @param null|string|string[] $interfaces Array or string of interface names or class names
@@ -210,7 +229,7 @@ class PluginFactory
 		$className = $this->_getClassName($config);
 		if ($fly)
 		{
-			if(isset($this->plugins[$className]))
+			if (isset($this->plugins[$className]))
 			{
 				$plugin = $this->plugins[$className];
 			}
