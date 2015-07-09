@@ -22,4 +22,24 @@ class Gazebo
 
 	const DefaultInstanceId = 'gazebo';
 
+	/**
+	 * Version holder
+	 * @var string
+	 */
+	private static $_version = null;
+
+	/**
+	 * Get current addendum version.
+	 *
+	 * @return string
+	 */
+	public function getVersion()
+	{
+		if (null === self::$_version)
+		{
+			self::$_version = require __DIR__ . '/version.php';
+		}
+		return self::$_version;
+	}
+
 }

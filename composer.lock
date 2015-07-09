@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "maslosoft/addendum",
-            "version": "4.0.2",
+            "version": "4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maslosoft/Addendum.git",
-                "reference": "fd789b26615a70fdbe294faeb1e4a62ee25f912a"
+                "reference": "2047b4676961826ba42254baeabb61314976fcd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maslosoft/Addendum/zipball/fd789b26615a70fdbe294faeb1e4a62ee25f912a",
-                "reference": "fd789b26615a70fdbe294faeb1e4a62ee25f912a",
+                "url": "https://api.github.com/repos/Maslosoft/Addendum/zipball/2047b4676961826ba42254baeabb61314976fcd1",
+                "reference": "2047b4676961826ba42254baeabb61314976fcd1",
                 "shasum": ""
             },
             "require": {
@@ -62,7 +62,7 @@
                 "annotations",
                 "metadata"
             ],
-            "time": "2015-07-07 17:11:32"
+            "time": "2015-07-09 13:02:25"
         },
         {
             "name": "maslosoft/cache",
@@ -723,12 +723,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maslosoft/GazeboTest.git",
-                "reference": "7ca71105583e8fde28a0c24932e17938c3933c5b"
+                "reference": "ebb598344d88e035eb998461b6c5569bf9286101"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maslosoft/GazeboTest/zipball/7ca71105583e8fde28a0c24932e17938c3933c5b",
-                "reference": "7ca71105583e8fde28a0c24932e17938c3933c5b",
+                "url": "https://api.github.com/repos/Maslosoft/GazeboTest/zipball/ebb598344d88e035eb998461b6c5569bf9286101",
+                "reference": "ebb598344d88e035eb998461b6c5569bf9286101",
                 "shasum": ""
             },
             "require": {
@@ -753,7 +753,7 @@
                 }
             ],
             "description": "Gazebo plugin container test suite",
-            "time": "2015-05-05 08:40:48"
+            "time": "2015-07-09 13:06:15"
         },
         {
             "name": "maslosoft/hedron",
