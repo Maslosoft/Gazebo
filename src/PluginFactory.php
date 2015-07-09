@@ -102,13 +102,20 @@ class PluginFactory
 	 * This will create only **one instance** of each plugin.
 	 *
 	 * @param mixed[][] $configuration
-	 * @param object $object
+	 * @param string|object $object
 	 * @param null|string|string[] $interfaces
 	 * @return object[] Array of plugin instances
 	 */
 	public function instance($configuration, $object, $interfaces = null)
 	{
-		$key = get_class($object);
+		if (is_string($object))
+		{
+			$key = $object;
+		}
+		else
+		{
+			$key = get_class($object);
+		}
 		if (null !== $interfaces)
 		{
 			if (!is_array($interfaces))
