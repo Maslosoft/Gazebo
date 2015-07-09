@@ -8,7 +8,6 @@ nb-configuration.xml
 
 *.pydevproject
 .project
-.metadata
 bin/**
 tmp/**
 tmp/**/*
@@ -41,8 +40,6 @@ local.properties
 auto-save-list
 tramp
 .\#*
-
-.DS_Store
 
 # Thumbnails
 ._*
