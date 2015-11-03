@@ -11,8 +11,9 @@
 <img src="https://poser.pugx.org/maslosoft/gazebo/license.svg" alt="License" style="height: 20px;"/>
 </a>
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Maslosoft/Gazebo/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Maslosoft/Gazebo/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/Maslosoft/Gazebo/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Maslosoft/Gazebo/?branch=master)
 <img src="https://travis-ci.org/Maslosoft/Gazebo.svg?branch=master"/>
-<img src="https://travis-ci.org/Maslosoft/Gazebo.svg?branch=master"/>
+<img src="http://hhvm.h4cc.de/badge/maslosoft/gazebo.svg?style=flat"/>
 
 ### Quick Install
 ```bash
@@ -21,7 +22,7 @@ composer require maslosoft/gazebo:"*"
 
 <!--/header-->
 
-## Usage
+### Usage
 
 ```php
 //Plugins
