@@ -126,6 +126,7 @@ class PluginFactory
 			}
 			$key .= '.' . implode('.', $interfaces);
 		}
+		$key = md5($key . json_encode($configuration));
 		if (!isset($this->instances[$key]))
 		{
 			$plugins = [];
@@ -234,17 +235,17 @@ class PluginFactory
 	 */
 	private function _instantiate($config, $fly = false)
 	{
-
+		$key = md5(json_encode($config));
 		$className = $this->_getClassName($config);
 		if ($fly)
 		{
-			if (isset($this->plugins[$className]))
+			if (isset($this->plugins[$key]))
 			{
-				$plugin = $this->plugins[$className];
+				$plugin = $this->plugins[$key];
 			}
 			else
 			{
-				$plugin = $this->plugins[$className] = new $className;
+				$plugin = $this->plugins[$key] = new $className;
 			}
 		}
 		else
