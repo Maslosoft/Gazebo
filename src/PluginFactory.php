@@ -95,18 +95,18 @@ class PluginFactory
 	}
 
 	/**
-	 * Get instance of plugin set from `$configuration` for `$object`
+	 * Get instance of plugin set from `$config` for `$object`
 	 * optionally implementing one or more `$interfaces`.
 	 *
 	 * This will create instances unique for each object and interfaces set.
-	 * This will create only **one instance** of each plugin.
+	 * This will create only **one instance** of each plugin per config.
 	 *
-	 * @param mixed[][] $configuration
+	 * @param mixed[][] $config
 	 * @param string|object $object
 	 * @param null|string|string[] $interfaces
 	 * @return object[] Array of plugin instances
 	 */
-	public function instance($configuration, $object, $interfaces = null)
+	public function instance($config, $object, $interfaces = null)
 	{
 		if (is_string($object))
 		{
@@ -126,11 +126,11 @@ class PluginFactory
 			}
 			$key .= '.' . implode('.', $interfaces);
 		}
-		$key = md5($key . json_encode($configuration));
+		$key .= $this->getKey($config);
 		if (!isset($this->instances[$key]))
 		{
 			$plugins = [];
-			foreach ($this->_getConfigs($configuration, $object, $interfaces) as $config)
+			foreach ($this->_getConfigs($config, $object, $interfaces) as $config)
 			{
 				$plugins[] = $this->_instantiate($config, true);
 			}
@@ -235,7 +235,7 @@ class PluginFactory
 	 */
 	private function _instantiate($config, $fly = false)
 	{
-		$key = md5(json_encode($config));
+		$key = $this->getKey($config);
 		$className = $this->_getClassName($config);
 		if ($fly)
 		{
@@ -257,6 +257,25 @@ class PluginFactory
 			$plugin = $this->di->apply($config, $plugin);
 		}
 		return $plugin;
+	}
+
+	private function getKey($config)
+	{
+		if (is_array($config))
+		{
+			// Only class field, use class name as a key
+			if (!empty($config['class']) && count($config) === 1)
+			{
+				return $config['class'];
+			}
+
+			// Complex config
+			return md5(json_encode($config));
+		}
+		else
+		{
+			return $config;
+		}
 	}
 
 }
