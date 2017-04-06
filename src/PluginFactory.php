@@ -235,10 +235,10 @@ class PluginFactory
 	 */
 	private function _instantiate($config, $fly = false)
 	{
-		$key = $this->getKey($config);
 		$className = $this->_getClassName($config);
 		if ($fly)
 		{
+			$key = $this->getKey($config);
 			if (isset($this->plugins[$key]))
 			{
 				$plugin = $this->plugins[$key];
@@ -270,7 +270,7 @@ class PluginFactory
 			}
 
 			// Complex config
-			return md5(json_encode($config));
+			return json_encode($config);
 		}
 		else
 		{
