@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91119a6f6b889c5e974f3bdd7151e5a6",
+    "content-hash": "3090837fb2e7cd0626a6c54b241aae8a",
     "packages": [
         {
             "name": "maslosoft/addendum",
@@ -4107,7 +4107,10 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=7.4",
+        "ext-json": "*"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
 }

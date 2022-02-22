@@ -18,6 +18,7 @@
     }
   ],
   "require": {
+    "php": ">=7.4",
     "maslosoft/embedi": "^2",
     "maslosoft/addendum": "*",
     "ext-json": "*"
