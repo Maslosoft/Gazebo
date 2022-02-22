@@ -25,15 +25,15 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 
 	/**
 	 * Values holder
-	 * @var mixed[]
+	 * @var array[]
 	 */
-	private $_values = [];
+	private array $_values = [];
 
 	/**
 	 * DI container
 	 * @var EmbeDi
 	 */
-	private $_di = null;
+	private EmbeDi $_di;
 
 	/**
 	 * Create instance with optional configuration.
