@@ -1,28 +1,35 @@
 {
-	"name": "maslosoft/gazebo",
-	"description": "Plugin container",
-	"require-dev": {
-		"maslosoft/hedron": "*",
-		"maslosoft/gazebotest": "dev-master"
-	},
-	"license": [
-		"AGPL",
-		"Commercial"
-	],
-	"authors": [
-		{
-			"name": "Peter Maselkowski",
-			"email": "pmaselkowski@gmail.com"
-		}
-	],
-	"require": {
-		"maslosoft/embedi": "*",
-		"maslosoft/addendum": "*"
-	},
-	"autoload": {
-		"psr-4": {
-			"Maslosoft\\Gazebo\\": "src"
-		}
-	},
-	"homepage": "https://maslosoft.com/gazebo/"
+  "name": "maslosoft/gazebo",
+  "description": "Plugin container",
+  "require-dev": {
+    "codeception/module-asserts": "^2.0",
+    "codeception/codeception": "^4",
+    "codeception/specify": "^2",
+    "maslosoft/hedron": "^1"
+  },
+  "license": [
+    "AGPL",
+    "Commercial"
+  ],
+  "authors": [
+    {
+      "name": "Peter Maselkowski",
+      "email": "pmaselkowski@gmail.com"
+    }
+  ],
+  "require": {
+    "maslosoft/embedi": "*",
+    "maslosoft/addendum": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Maslosoft\\Gazebo\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Maslosoft\\GazeboTest\\Model\\": "model"
+    }
+  },
+  "homepage": "https://maslosoft.com/gazebo/"
 }

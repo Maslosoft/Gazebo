@@ -1,13 +1,13 @@
 actor: Tester
 paths:
-    tests: vendor/maslosoft/gazebotest/tests
+    tests: tests
     log: tests/_output
-    data: vendor/maslosoft/gazebotest/tests/_data
-    helpers: vendor/maslosoft/gazebotest/tests/_support
+    data: tests/_data
+    helpers: tests/_support
 settings:
-    bootstrap: _bootstrap.php
     colors: true
     memory_limit: 1024M
+bootstrap: _bootstrap.php
 coverage:
     enabled: true
     remote: false

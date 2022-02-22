@@ -1,5 +1,0 @@
-#!/bin/bash
-cd vendor/maslosoft/gazebotest
-git add * -A
-git commit -am'+ Tests'
-git push

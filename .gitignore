@@ -61,8 +61,6 @@ Desktop.ini
 *.un~
 Session.vim
 /vendor
-/models
-/unit
 /api
 
 tests/_output/*
