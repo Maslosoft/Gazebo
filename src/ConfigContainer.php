@@ -66,7 +66,7 @@ abstract class ConfigContainer implements ArrayAccess, Countable, Iterator
 	 * Apply configuration
 	 * @param mixed[] $config
 	 */
-	public function apply($config)
+	public function apply($config): void
 	{
 		foreach ($config as $name => $value)
 		{
@@ -74,7 +74,7 @@ abstract class ConfigContainer implements ArrayAccess, Countable, Iterator
 		}
 	}
 
-	public function has($name)
+	public function has($name): bool
 	{
 		return array_key_exists($name, $this->_properties);
 	}
@@ -124,11 +124,12 @@ abstract class ConfigContainer implements ArrayAccess, Countable, Iterator
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="ArrayAccess implementation">
 
-	public function offsetExists($name)
+	public function offsetExists($name): bool
 	{
 		return array_key_exists($name, $this->_values);
 	}
 
+	#[\ReturnTypeWillChange]
 	public function offsetGet($name)
 	{
 		if (!$this->has($name))
@@ -138,6 +139,7 @@ abstract class ConfigContainer implements ArrayAccess, Countable, Iterator
 		return $this->_values[$name]->toArray();
 	}
 
+	#[\ReturnTypeWillChange]
 	public function offsetSet($name, $value)
 	{
 		if (!$this->has($name))
@@ -147,7 +149,7 @@ abstract class ConfigContainer implements ArrayAccess, Countable, Iterator
 		return $this->_values[$name] = new PluginsContainer($value);
 	}
 
-	public function offsetUnset($name)
+	public function offsetUnset($name): void
 	{
 		if (!$this->has($name))
 		{
@@ -159,7 +161,7 @@ abstract class ConfigContainer implements ArrayAccess, Countable, Iterator
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Countable implementation">
 
-	public function count($mode = COUNT_NORMAL)
+	public function count($mode = COUNT_NORMAL): int
 	{
 		return count($this->_values, $mode);
 	}
@@ -167,27 +169,29 @@ abstract class ConfigContainer implements ArrayAccess, Countable, Iterator
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Iterator implementation">
 
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		return $this->offsetGet(key($this->_values));
 	}
 
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return key($this->_values);
 	}
 
-	public function next()
+	public function next(): void
 	{
-		return next($this->_values);
+		next($this->_values);
 	}
 
-	public function rewind()
+	public function rewind(): void
 	{
-		return reset($this->_values);
+		reset($this->_values);
 	}
 
-	public function valid()
+	public function valid(): bool
 	{
 		return $this->has($this->key()) && $this->offsetExists($this->key());
 	}

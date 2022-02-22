@@ -18,8 +18,9 @@
     }
   ],
   "require": {
-    "maslosoft/embedi": "*",
-    "maslosoft/addendum": "*"
+    "maslosoft/embedi": "^2",
+    "maslosoft/addendum": "*",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {

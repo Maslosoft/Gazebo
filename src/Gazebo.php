@@ -20,20 +20,20 @@ namespace Maslosoft\Gazebo;
 class Gazebo
 {
 
-	const DefaultInstanceId = 'gazebo';
+	public const DefaultInstanceId = 'gazebo';
 
 	/**
 	 * Version holder
-	 * @var string
+	 * @var string|null
 	 */
-	private static $_version = null;
+	private static ?string $_version = null;
 
 	/**
 	 * Get current addendum version.
 	 *
 	 * @return string
 	 */
-	public function getVersion()
+	public function getVersion(): string
 	{
 		if (null === self::$_version)
 		{

@@ -15,7 +15,7 @@ namespace Maslosoft\Gazebo\Storage;
 use Maslosoft\EmbeDi\StaticStorage;
 
 /**
- * Storega for single instances of plugins
+ * Storage for single instances of plugins
  *
  * @author Piotr Maselkowski <pmaselkowski at gmail.com>
  */

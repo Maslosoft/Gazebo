@@ -12,9 +12,11 @@
 
 namespace Maslosoft\Gazebo;
 
+use Generator;
 use Maslosoft\EmbeDi\EmbeDi;
 use Maslosoft\Gazebo\Exceptions\ConfigurationException;
 use Maslosoft\Gazebo\Storage\PluginsStorage;
+use Maslosoft\Gazebo\Storage\PluginStorage;
 use ReflectionClass;
 
 /**
@@ -29,19 +31,19 @@ class PluginFactory
 	 * Configured plugins instances
 	 * @var PluginsStorage
 	 */
-	private $instances = null;
+	private PluginsStorage $instances;
 
 	/**
 	 * Single plugins instances
-	 * @var Storage\PluginStorage
+	 * @var PluginStorage
 	 */
-	private $plugins = null;
+	private PluginStorage $plugins;
 
 	/**
 	 * EmbeDi instance
 	 * @var EmbeDi
 	 */
-	private $di = null;
+	private EmbeDi $di;
 
 	/**
 	 * Static instances of plugin factories
@@ -53,10 +55,10 @@ class PluginFactory
 	 * Class constructor with optional instanceid which is passed to EmbeDi
 	 * @param string $instanceId
 	 */
-	public function __construct($instanceId = Gazebo::DefaultInstanceId)
+	public function __construct(string $instanceId = Gazebo::DefaultInstanceId)
 	{
 		$this->instances = new PluginsStorage($this, $instanceId);
-		$this->plugins = new Storage\PluginStorage($this, $instanceId);
+		$this->plugins = new PluginStorage($this, $instanceId);
 		$this->di = new EmbeDi($instanceId);
 	}
 
@@ -66,7 +68,7 @@ class PluginFactory
 	 * @param string $instanceId
 	 * @return PluginFactory Flyweight instance of PluginFactory
 	 */
-	public static function fly($instanceId = Gazebo::DefaultInstanceId)
+	public static function fly(string $instanceId = Gazebo::DefaultInstanceId)
 	{
 		if (empty(self::$_pf[$instanceId]))
 		{
@@ -79,12 +81,12 @@ class PluginFactory
 	 * Create plugin set from `$configuration` for `$object`
 	 * optionally implementing one or more `$interfaces`.
 	 *
-	 * @param mixed[][] $configuration Configuration arrays
+	 * @param PluginsContainer|array[][] $configuration Configuration arrays
 	 * @param string|object $object Object or class name
 	 * @param null|string|string[] $interfaces Array or string of interface names or class names
 	 * @return object[] Array of plugin instances
 	 */
-	public function create($configuration, $object, $interfaces = null)
+	public function create($configuration, $object, $interfaces = null): array
 	{
 		$plugins = [];
 		foreach ($this->_getConfigs($configuration, $object, $interfaces) as $config)
@@ -101,7 +103,7 @@ class PluginFactory
 	 * This will create instances unique for each object and interfaces set.
 	 * This will create only **one instance** of each plugin per config.
 	 *
-	 * @param mixed[][] $config
+	 * @param PluginsContainer|array[][] $config
 	 * @param string|object $object
 	 * @param null|string|string[] $interfaces
 	 * @return object[] Array of plugin instances
@@ -130,9 +132,9 @@ class PluginFactory
 		if (!isset($this->instances[$key]))
 		{
 			$plugins = [];
-			foreach ($this->_getConfigs($config, $object, $interfaces) as $config)
+			foreach ($this->_getConfigs($config, $object, $interfaces) as $oneConfig)
 			{
-				$plugins[] = $this->_instantiate($config, true);
+				$plugins[] = $this->_instantiate($oneConfig, true);
 			}
 			$this->instances[$key] = $plugins;
 		}
@@ -145,7 +147,7 @@ class PluginFactory
 	 * @param null|string|string[] $interfaces Interfaces to check
 	 * @return boolean
 	 */
-	private function _implements($object, $interfaces = null)
+	private function _implements($object, $interfaces = null): bool
 	{
 		if (null === $interfaces)
 		{
@@ -182,7 +184,7 @@ class PluginFactory
 	 * @param string|mixed[] $config
 	 * @return string
 	 */
-	private function _getClassName($config)
+	private function _getClassName($config): string
 	{
 		if (is_string($config))
 		{
@@ -194,13 +196,12 @@ class PluginFactory
 	/**
 	 * Config generator
 	 *
-	 * @param mixed[][] $configuration Configuration arrays
+	 * @param PluginsContainer|array[][] $configuration Configuration arrays
 	 * @param string|object $object Object or class name
 	 * @param null|string|string[] $interfaces Array or string of interface names or class names
-	 * @return mixed[] Array of plugin configs
 	 * @yield mixed[] Array of plugin configs
 	 */
-	private function _getConfigs($configuration, $object, $interfaces = null)
+	private function _getConfigs($configuration, $object, $interfaces = null): Generator
 	{
 		foreach ($configuration as $interface => $configs)
 		{
@@ -259,7 +260,7 @@ class PluginFactory
 		return $plugin;
 	}
 
-	private function getKey($config)
+	private function getKey($config): string
 	{
 		if (is_array($config))
 		{
@@ -270,12 +271,11 @@ class PluginFactory
 			}
 
 			// Complex config
-			return json_encode($config);
+			return json_encode($config, JSON_THROW_ON_ERROR);
 		}
-		else
-		{
-			return $config;
-		}
+
+		// Scalar config, ie class name
+		return $config;
 	}
 
 }
