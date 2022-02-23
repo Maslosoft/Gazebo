@@ -14,6 +14,7 @@ use Iterator;
 use Maslosoft\Addendum\Utilities\ClassChecker;
 use Maslosoft\EmbeDi\EmbeDi;
 use Maslosoft\Gazebo\Exceptions\GazeboException;
+use const COUNT_NORMAL;
 
 /**
  * PluginsContainer
@@ -51,7 +52,7 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 	 * Apply configuration
 	 * @param mixed[] $config
 	 */
-	public function apply($config)
+	public function apply($config): void
 	{
 		foreach ((array)$config as $name => $value)
 		{
@@ -59,12 +60,12 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 		}
 	}
 
-	public function toArray()
+	public function toArray(): array
 	{
 		return $this->_values;
 	}
 
-	public function has($name)
+	public function has($name): bool
 	{
 		return ClassChecker::exists($name);
 	}
@@ -76,18 +77,18 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 	 * @param string $name
 	 * @return mixed
 	 */
-	public function __get($name)
+	public function __get(string $name)
 	{
 		return $this->offsetGet($name);
 	}
 
 	/**
 	 * This will be called instead of public setting properties.
-	 * @param string $name Configuration key value
-	 * @param mixed $value Configuration value
-	 * @return mixed
+	 * @param string $name  Configuration key value
+	 * @param mixed  $value Configuration value
+	 * @throws GazeboException
 	 */
-	public function __set($name, $value)
+	public function __set(string $name, $value): void
 	{
 		$this->offsetSet($name, $value);
 	}
@@ -96,7 +97,7 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 	 * Unset
 	 * @param string $name
 	 */
-	public function __unset($name)
+	public function __unset(string $name)
 	{
 		$this->offsetUnset($name);
 	}
@@ -106,7 +107,7 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 	 * @param string $name
 	 * @return bool
 	 */
-	public function __isset($name)
+	public function __isset($name): bool
 	{
 		return $this->offsetExists($name);
 	}
@@ -114,11 +115,12 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="ArrayAccess implementation">
 
-	public function offsetExists($name)
+	public function offsetExists($name): bool
 	{
 		return array_key_exists($name, $this->_values);
 	}
 
+	#[\ReturnTypeWillChange]
 	public function offsetGet($name)
 	{
 		if (!$this->has($name))
@@ -128,7 +130,7 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 		return $this->_values[$name];
 	}
 
-	public function offsetSet($name, $value)
+	public function offsetSet($name, $value): void
 	{
 		if (!$this->has($name))
 		{
@@ -149,10 +151,10 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 				throw new GazeboException("Class `$className` used as value does not exists. Tried to set value.");
 			}
 		}
-		return $this->_values[$name] = $value;
+		$this->_values[$name] = $value;
 	}
 
-	public function offsetUnset($name)
+	public function offsetUnset($name): void
 	{
 		if (!$this->has($name))
 		{
@@ -164,7 +166,7 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Countable implementation">
 
-	public function count($mode = COUNT_NORMAL)
+	public function count($mode = COUNT_NORMAL): int
 	{
 		return count($this->_values, $mode);
 	}
@@ -172,27 +174,29 @@ class PluginsContainer implements ArrayAccess, Countable, Iterator
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Iterator implementation">
 
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		return current($this->_values);
 	}
 
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return key($this->_values);
 	}
 
-	public function next()
+	public function next(): void
 	{
-		return next($this->_values);
+		next($this->_values);
 	}
 
-	public function rewind()
+	public function rewind(): void
 	{
-		return reset($this->_values);
+		reset($this->_values);
 	}
 
-	public function valid()
+	public function valid(): bool
 	{
 		return $this->has($this->key()) && $this->offsetExists($this->key());
 	}
