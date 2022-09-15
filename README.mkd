@@ -1,7 +1,7 @@
 <!--header-->
 <!-- Auto generated do not modify between `header` and `/header` -->
 
-# <a href="https://maslosoft.com/gazebo/">Maslosoft Gazebo</a>
+# <a href="https://maslosoft.com/gazebo/"><img src="https://maslosoft.com/gazebo/gazebo.svg" style="height:24px;" alt="Gazebo Logo"></a> <a href="https://maslosoft.com/gazebo/">Maslosoft Gazebo</a>
 <a href="https://maslosoft.com/gazebo/">_Plugin container_</a>
 
 <a href="https://packagist.org/packages/maslosoft/gazebo" title="Latest Stable Version">
