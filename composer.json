@@ -1,36 +1,38 @@
 {
-  "name": "maslosoft/gazebo",
-  "description": "Plugin container",
-  "require-dev": {
-    "codeception/module-asserts": "^2.0",
-    "codeception/codeception": "^4",
-    "codeception/specify": "^2",
-    "maslosoft/hedron": "^1"
-  },
-  "license": [
-    "AGPL",
-    "Commercial"
-  ],
-  "authors": [
-    {
-      "name": "Peter Maselkowski",
-      "email": "pmaselkowski@gmail.com"
-    }
-  ],
-  "require": {
-    "php": ">=7.4",
-    "maslosoft/embedi": "*",
-    "ext-json": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "Maslosoft\\Gazebo\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Maslosoft\\GazeboTest\\Model\\": "model"
-    }
-  },
-  "homepage": "https://maslosoft.com/gazebo/"
+	"name": "maslosoft/gazebo",
+	"description": "Plugin container",
+	"require-dev": {
+		"codeception/module-asserts": "^3",
+		"codeception/codeception": "^5"
+	},
+	"license": [
+		"AGPL",
+		"Commercial"
+	],
+	"authors": [
+		{
+			"name": "Peter Maselkowski",
+			"email": "pmaselkowski@gmail.com"
+		}
+	],
+	"require": {
+		"php": ">=7.4",
+		"maslosoft/embedi": "*",
+		"maslosoft/addendum": "*",
+		"ext-json": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"Maslosoft\\Gazebo\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Maslosoft\\GazeboTest\\Model\\": "model"
+		}
+	},
+	"homepage": "https://maslosoft.com/gazebo/",
+	"support": {
+		"issues": "https://github.com/Maslosoft/Gazebo/issues"
+	}
 }

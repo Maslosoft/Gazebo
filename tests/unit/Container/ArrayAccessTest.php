@@ -2,7 +2,7 @@
 
 namespace Container;
 
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 use Maslosoft\Gazebo\ConfigContainer;
 use Maslosoft\GazeboTest\Model\HardInterface;
 use Maslosoft\GazeboTest\Model\SoftInterface;
@@ -21,7 +21,7 @@ class TestContainer extends ConfigContainer
 
 }
 
-class ArrayAccessTest extends Test
+class ArrayAccessTest extends Unit
 {
 
 	/**

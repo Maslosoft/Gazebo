@@ -2,7 +2,7 @@
 
 namespace Factory;
 
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 use Maslosoft\Gazebo\Exceptions\GazeboException;
 use Maslosoft\Gazebo\PluginFactory;
 use Maslosoft\Gazebo\PluginsContainer;
@@ -15,7 +15,7 @@ use Maslosoft\GazeboTest\Model\WaterPlugin;
 use Maslosoft\GazeboTest\Model\WetInterface;
 use UnitTester;
 
-class PluginsTest extends Test
+class PluginsTest extends Unit
 {
 
 	/**

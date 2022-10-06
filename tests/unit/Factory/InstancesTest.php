@@ -2,7 +2,7 @@
 
 namespace Factory;
 
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 use Maslosoft\Gazebo\PluginFactory;
 use Maslosoft\GazeboTest\Model\HardInterface;
 use Maslosoft\GazeboTest\Model\SoftInterface;
@@ -13,7 +13,7 @@ use Maslosoft\GazeboTest\Model\MetalPlugin;
 use Maslosoft\GazeboTest\Model\WetInterface;
 use UnitTester;
 
-class InstancesTest extends Test
+class InstancesTest extends Unit
 {
 
 	/**
