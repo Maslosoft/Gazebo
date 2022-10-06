@@ -29,7 +29,7 @@ class Gazebo
 	private static ?string $_version = null;
 
 	/**
-	 * Get current addendum version.
+	 * Get current gazebo version.
 	 *
 	 * @return string
 	 */
