@@ -13,9 +13,6 @@ cache:
     - vendor
 install:
   - composer install --dev --prefer-dist --no-interaction
-  # Get fresh tests
-  - rm -rf vendor/maslosoft/gazebotest
-  - git clone https://github.com/Maslosoft/GazeboTest.git vendor/maslosoft/gazebotest
 before_script:
   - cd $TRAVIS_BUILD_DIR
 script:

@@ -1,4 +1,5 @@
 *.php text eol=lf
 *.phps text eol=lf
 *.md text eol=lf
+*.mkd text eol=lf
 *.html text eol=lf
