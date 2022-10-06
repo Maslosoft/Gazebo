@@ -32,7 +32,7 @@ composer require maslosoft/gazebo
 # Plugin container
 
 When developing plugins for Your application, these might
-come in very different kids. This library helps managing
+come in very different kids. This library helps to manage
 plugins by providing sets of instantiated plugins
 required for various scenarios. All plugins for component
 using gazebo are configured as a one simple list - thus
